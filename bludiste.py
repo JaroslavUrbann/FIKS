@@ -45,7 +45,9 @@ def jezdi2(M, N, k, kosticek, min_path):
                 for a in range(N):
                     mezera_stalagtitu += 1
                     mezera_stalagmitu += 1
-                    if mezera_stalagtitu == 4 and pridat > 0 and a + 3 <= N:
+                    if mezera_stalagtitu == 4 and pridat > 0 and a + 3 < N:
+                        print(a+3)
+                        print(N)
                         pridat -= 1
                         mezera_stalagtitu = 0
                         row.append("#")
@@ -93,17 +95,17 @@ def jezdi(M, N, k):
 
 
 os.remove("output.txt")
-M = 60
-N = 53
-k = 200
-
-jezdi(M, N, k)
-# with open("input.txt", "r") as file:
-#     lines = file.readline()
-#     for i in range(int(lines)):
-#         line = file.readline()
-#         parameters = str(line).split(" ")
-#         jezdi(int(parameters[0]), int(parameters[1]), int(parameters[2]))
+# M = 8
+# N = 11
+# k = 48
+#
+# jezdi(M, N, k)
+with open("input.txt", "r") as file:
+    lines = file.readline()
+    for i in range(int(lines)):
+        line = file.readline()
+        parameters = str(line).split(" ")
+        jezdi(int(parameters[0]), int(parameters[1]), int(parameters[2]))
 # 2: 2
 # 3: 3
 # 4: 4
