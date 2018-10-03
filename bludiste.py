@@ -21,7 +21,7 @@ def jezdi2(M, N, k, kosticek, min_path):
     vyska = M + 1
     pridat = int((k - min_path) / 2)
     stalagmit = False
-    with open("output.txt", "a") as output:
+    with open("output.txt", "w") as output:
         for i in range(1, vyska):
             if i % 2 != 0 and i + kosticek - 1 < M:
                 output.write(str("".join(["."] * N)) + "\n")
@@ -61,7 +61,7 @@ def jezdi2(M, N, k, kosticek, min_path):
 def jezdi(M, N, k):
     min_path = M + N - 1
     max_path = 0
-    with open("output.txt", "a") as output:
+    with open("output.txt", "w") as output:
         if min_path > k:
             output.write("Nejde to." + "\n")
             return
@@ -91,11 +91,9 @@ def jezdi(M, N, k):
     print(max_path)
     jezdi2(M, N, k, sort, min_path)
 
-
-os.remove("output.txt")
-M = 7
+M = 8
 N = 13
-k = 55
+k = 56
 
 jezdi(M, N, k)
 # with open("input.txt", "r") as file:

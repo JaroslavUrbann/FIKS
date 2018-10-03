@@ -1,7 +1,7 @@
-import random
 import math
+import random
 
-l = random.sample(range(100), 10)
+l = random.sample([1,1,1,1,1,1,0,0,0,0,0,0,0], 2)
 
 
 def SearchTable(l, mintable, maxtable, parity, a, b):
@@ -9,16 +9,16 @@ def SearchTable(l, mintable, maxtable, parity, a, b):
     k = math.floor(math.log(o, 2))
     moveby = o - 2 ** k
     if l[maxtable[k][a]] > l[maxtable[k][a + moveby]]:
-        return min(l[mintable[k][a]], l[mintable[k][a + moveby]]), maxtable[k][a], parity[a - 1] ^ parity[b]
+        return min(l[mintable[k][a]], l[mintable[k][a + moveby]]), maxtable[k][a], parity[a] ^ parity[b + 1]
     else:
-        return min(l[mintable[k][a]], l[mintable[k][a + moveby]]), maxtable[k][a + moveby], parity[a - 1] ^ parity[b]
+        return min(l[mintable[k][a]], l[mintable[k][a + moveby]]), maxtable[k][a + moveby], parity[a] ^ parity[b + 1]
 
 
 def CreateTable(l):
     avariable = True
     mintable = []
     maxtable = []
-    parity = [l[0]]
+    parity = [0]
     countparity = True
     j = 0
     x = 0
@@ -28,15 +28,17 @@ def CreateTable(l):
         width = 2**j
         mintable.append([])
         maxtable.append([])
-        while i + width < len(l):
+        while i + width <= len(l):
             mini = l.index(min(l[i:i + width]))
             maxi = l.index(max(l[i:i + width]))
             mintable[x].append(mini)
             maxtable[x].append(maxi)
             if countparity and i < len(l) - 1:
-                parity.append(l[i + 1] ^ parity[i])
+                parity.append(l[i] ^ parity[i])
             i += 1
             y += 1
+        if countparity:
+            parity.append(l[i - 1])
         countparity = False
         x += 1
         j += 1
@@ -49,36 +51,22 @@ def CreateTable(l):
 print(l)
 mintable, maxtable, parity = CreateTable(l)
 print(parity)
-print(l[1]^l[0])
-print(parity[0]^parity[1])
-print(SearchTable(l, mintable, maxtable, parity, 0, 2))
-# result = []
-# al = 0
-# for x in l:
-#     al ^= x
-#     result.append(al)
-    # print(al)
-
-# print("-----")
-# print(12^13^11)
-# print(1^11)
-# XOR done
-# Range minimum query
-# asi taky
-# with open("input.txt", "r") as file:
-#     tasks = file.readline()
-#     for i in range(int(tasks)):
-#         line = file.readline().split(" ")
-#         n_cenzorek = int(line[0])
+print(l[0]^l[1])
+# print(1^0^1)
+minimum, maximum, par = SearchTable(l, mintable, maxtable, parity, 1, 1)
+print(par)
+# with open("input.txt", "r") as input, open("output.txt", "w") as output:
+#     tasks = int(input.readline())
+#     for i in range(tasks):
+#         line = input.readline().split(" ")
 #         n_requests = int(line[1])
-#         cenzorky = file.readline().split(" ")
+#         cenzorky = list(map(int, input.readline().split(" ")))
+#         mintable, maxtable, parity = CreateTable(cenzorky)
 #         for a in range(n_requests):
-#             doShit()
-# | 001011  1
-# | 000100  1
-# | 011010  1
-# | 101000  0
-# |   0
-# |   0
-# |   0
-# |   1
+#             line2 = input.readline().split(" ")
+#             minimum, maximum, par = SearchTable(cenzorky, mintable, maxtable, parity, int(line2[0]), int(line2[1]))
+#             output.write(str(int(minimum)))
+#             output.write(str(int(maximum)))
+#             output.write(str(int(par)) + "\n")
+#         print(str(tasks - i))
+
