@@ -1,7 +1,7 @@
 import math
 import random
 
-l = random.sample([1,1,1,1,1,1,0,0,0,0,0,0,0], 2)
+l = random.sample(range(100), 10)
 
 
 def SearchTable(l, mintable, maxtable, parity, a, b):
@@ -33,12 +33,12 @@ def CreateTable(l):
             maxi = l.index(max(l[i:i + width]))
             mintable[x].append(mini)
             maxtable[x].append(maxi)
-            if countparity and i < len(l) - 1:
+            if countparity and i < len(l):
                 parity.append(l[i] ^ parity[i])
             i += 1
             y += 1
-        if countparity:
-            parity.append(l[i - 1])
+        # if countparity:
+        #     parity.append(0)
         countparity = False
         x += 1
         j += 1
@@ -48,13 +48,13 @@ def CreateTable(l):
             avariable = False
     return mintable, maxtable, parity
 
+
 print(l)
 mintable, maxtable, parity = CreateTable(l)
-print(parity)
-print(l[0]^l[1])
-# print(1^0^1)
-minimum, maximum, par = SearchTable(l, mintable, maxtable, parity, 1, 1)
-print(par)
+minimum, maximum, par = SearchTable(l, mintable, maxtable, parity, 6, 9)
+print(maximum)
+
+
 # with open("input.txt", "r") as input, open("output.txt", "w") as output:
 #     tasks = int(input.readline())
 #     for i in range(tasks):
