@@ -36,27 +36,30 @@ def Main(cenzor_list, queries_list):
     nodes_list = []
     nodes_stack_higher = []
     nodes_stack_lower = []
-    parity_list = []
+    parity_list = [0]
     for i in range(len(cenzor_list)):
+        parity_list.append(parity_list[i] ^ cenzor_list[i])
         nodes_list.append(Process_cenzor(i, cenzor_list[i]))
-        while nodes_stack_higher and nodes_stack_higher[-1].value <= nodes_list[i].value:
+        while nodes_stack_higher and nodes_stack_higher[-1].value < nodes_list[i].value:
             nodes_stack_higher.pop().parentsid_higher = nodes_list[i].id
-            nodes_stack_higher.append(nodes_list[i])
-        while nodes_stack_lower and nodes_stack_lower[-1].value <= nodes_list[i].value:
+        nodes_stack_higher.append(nodes_list[i])
+        while nodes_stack_lower and nodes_stack_lower[-1].value > nodes_list[i].value:
             nodes_stack_lower.pop().parentsid_lower = nodes_list[i].id
-            nodes_stack_lower.append(nodes_list[i])
+        nodes_stack_lower.append(nodes_list[i])
         for q in range(len(queries_list[i])):
-            lowest_value_node_id = FindParent_higher(nodes_list[queries_list[i][q][0]], nodes_list)
+            lowest_value_node_id = FindParent_lower(nodes_list[queries_list[i][q][0]], nodes_list)
             queries_list[i][q].append(nodes_list[lowest_value_node_id].value)
             queries_list[i][q].append(FindParent_higher(nodes_list[queries_list[i][q][0]], nodes_list))
+            queries_list[i][q].append(parity_list[queries_list[i][q][0]] ^ parity_list[queries_list[i][q][1] + 1])
 
 
 def WriteIt(queries_list, queries_index):
     with open("output.txt", "a") as output:
         for i in range(len(queries_index)):
-            query_to_write = queries_list[queries_index.pop()].pop()
+            query_to_write = queries_list[queries_index.pop(0)].pop(0)
             output.write(str(query_to_write[2]) + "\n")
             output.write(str(query_to_write[3]) + "\n")
+            output.write(str(query_to_write[4]) + "\n")
 
 
 def realShit():
