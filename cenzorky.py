@@ -49,24 +49,24 @@ def CreateTable(l):
     return mintable, maxtable, parity
 
 
-print(l)
-mintable, maxtable, parity = CreateTable(l)
-minimum, maximum, par = SearchTable(l, mintable, maxtable, parity, 6, 9)
-print(maximum)
+# print(l)
+# mintable, maxtable, parity = CreateTable(l)
+# minimum, maximum, par = SearchTable(l, mintable, maxtable, parity, 6, 9)
+# print(maximum)
 
 
-# with open("input.txt", "r") as input, open("output.txt", "w") as output:
-#     tasks = int(input.readline())
-#     for i in range(tasks):
-#         line = input.readline().split(" ")
-#         n_requests = int(line[1])
-#         cenzorky = list(map(int, input.readline().split(" ")))
-#         mintable, maxtable, parity = CreateTable(cenzorky)
-#         for a in range(n_requests):
-#             line2 = input.readline().split(" ")
-#             minimum, maximum, par = SearchTable(cenzorky, mintable, maxtable, parity, int(line2[0]), int(line2[1]))
-#             output.write(str(int(minimum)))
-#             output.write(str(int(maximum)))
-#             output.write(str(int(par)) + "\n")
-#         print(str(tasks - i))
+with open("input.txt", "r") as input, open("output.txt", "w") as output:
+    tasks = int(input.readline())
+    for i in range(tasks):
+        line = input.readline().split(" ")
+        n_requests = int(line[1])
+        cenzorky = list(map(int, input.readline().split(" ")))
+        mintable, maxtable, parity = CreateTable(cenzorky)
+        for a in range(n_requests):
+            line2 = input.readline().split(" ")
+            minimum, maximum, par = SearchTable(cenzorky, mintable, maxtable, parity, int(line2[0]), int(line2[1]))
+            output.write(str(int(minimum)) + "\n")
+            output.write(str(int(maximum)) + "\n")
+            output.write(str(int(par)) + "\n")
+        print(str(tasks - i))
 
