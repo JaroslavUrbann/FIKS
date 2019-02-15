@@ -23,18 +23,18 @@ class Mince:
         privod_account = 0
         the_line = 0
         while money >= 0:
-            while odvod_account > 0 and self.zustatky[self.odvod[odvod_account, 1]] <= max_amount:
+            while odvod_account > 0 and self.odvod[odvod_account, 1] <= max_amount:
                 odvod_account -= 1
-            if odvod_account == 0 and self.zustatky[self.odvod[odvod_account, 1]] <= max_amount:
+            if odvod_account < 0 or odvod_account == 0 and self.odvod[0, 1] <= max_amount:
                 return True
 
-            while privod_account < len(self.privod) - 1 and self.zustatky[self.privod[privod_account, 1]] >= max_amount:
+            while privod_account < len(self.privod) - 1 and self.privod[privod_account, 1] >= max_amount:
                 privod_account += 1
-            if privod_account == len(self.privod) - 1 and self.zustatky[self.privod[privod_account, 1]] >= max_amount:
+            if privod_account >= len(self.privod) or privod_account == len(self.privod) - 1 and self.privod[privod_account, 1] >= max_amount:
                 return False
 
-            sum_to_get_rid_of = self.zustatky[self.odvod[odvod_account, 1]] - max_amount
-            sum_to_fill = max_amount - self.zustatky[self.privod[privod_account, 1]]
+            sum_to_get_rid_of = self.odvod[odvod_account, 1] - max_amount
+            sum_to_fill = max_amount - self.privod[privod_account, 1]
 
             if the_line > 0:
                 sum_to_get_rid_of = the_line
@@ -56,24 +56,30 @@ class Mince:
         return False
 
     # [hodnota, adresa peněz],
-    def create_arrays(self, all, money):
+    def create_arrays(self, zustatek, odvod, privod, money):
         self.money = money
-        all = all[all[:, 0].argsort()]
-        odvod = np.c_[all[:, 1], np.arange(0, all.shape[0])]
+        odvod = np.c_[odvod, zustatek]
         self.odvod = odvod[odvod[:, 0].argsort()]
-        privod = np.c_[all[:, 2], np.arange(0, all.shape[0])]
+        privod = np.c_[privod, zustatek]
         self.privod = privod[privod[:, 0].argsort()]
-        self.zustatky = all[:, 0]
-        print(self.binary_search(self.zustatky[0], self.zustatky[-1]))
+        print(self.binary_search(min(zustatek), max(zustatek)))
 
 
-zustatek = np.array([3, 4, 2])
-odvod = np.array([5, 5, 5])
-privod = np.array([3, 3, 6])
+# zustatek = np.array([6, 0, 0])
+# odvod = np.array([1, 1, 1])
+# privod = np.array([1, 1, 1])
 
-money = 6
+zustatek = np.random.randint(1, 100, 10)
+odvod = np.random.randint(1, 50, 10)
+privod = np.random.randint(1, 50, 10)
+money = np.random.randint(1, 100)
+
+print(zustatek)
+print(odvod)
+print(privod)
+print(money)
+
 
 all = np.c_[zustatek, odvod, privod]
 xd = Mince()
-xd.create_arrays(all, money)
-
+xd.create_arrays(zustatek, odvod, privod, money)
