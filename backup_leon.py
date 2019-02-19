@@ -1,3 +1,6 @@
+from __future__ import division
+
+
 class LPSTree:
     def __init__(self, n):
         self.n = n
@@ -114,6 +117,8 @@ class LPSTree:
 
     def add(self, start, stop, diff):
         n = self.n
+        if not(start < stop and start >=0 and stop <= n):
+            raise IndexError(start, stop)
         tree = self.tree
         tree2 = self.tree2
         tree3 = self.tree3
