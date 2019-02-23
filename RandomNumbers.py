@@ -2,7 +2,6 @@ from datetime import timedelta
 import datetime
 
 
-
 def calendar():
     with open("in.txt", "w") as file:
         file.write("80000\n")
