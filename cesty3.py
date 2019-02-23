@@ -102,30 +102,34 @@ def lca(u, v):
 
 def distance_top_down(ancestor, u):
     index = node_to_cycle_index[ancestor]
+    road = []
 
     def _distance_same_cycle(u, v):
         index = node_to_cycle_index[u]
         distance = distance_to_top[u] - distance_to_top[v]
         distance_2 = cycle[index].length - distance
         if distance > distance_2:
-            x = -1
-            
+            x = cycle[index].members.index(v)
+            while cycle[index].members[x] != u:
+                road.append(cycle[index].members[x])
+                x -= 1
             return distance_2
         x = v
-        road = []
         while x != u:
-            road.append(parent[x])
+            road.append(x)
             x = parent[x]
-        print(v, u)
-        print(road)
         return distance
 
     # if ancestor does not belong to any cycle
     if not index:
-        return d[u] - d[ancestor]
+        x = u
+        while x != ancestor:
+            road.append(x)
+            x = parent[x]
+        return d[u] - d[ancestor], road
     # if two vertices is in the same cycle
     if index == node_to_cycle_index[u]:
-        return _distance_same_cycle(ancestor, u)
+        return _distance_same_cycle(ancestor, u), road
     # we find b as the vertex in cycle index that is closest to u
     b = u
     i = 17
@@ -134,12 +138,28 @@ def distance_top_down(ancestor, u):
             b = f[b][i]
         i -= 1
     b = parent[b]
-    return d[u] - d[b] + _distance_same_cycle(ancestor, b)
+    x = u
+    road_2 = []
+    while x != b:
+        road_2.append(x)
+        x = parent[x]
+    dist = d[u] - d[b] + _distance_same_cycle(ancestor, b)
+    return dist, road_2 + road
 
 
 def calc(u, v):
     r = lca(u, v)
-    return distance_top_down(r, u) + distance_top_down(r, v)
+    dist, path = distance_top_down(r, u)
+    dist_2, path_2 = distance_top_down(r, v)
+    print(dist + dist_2)
+    xd = [u]
+    for i in range(len(path)):
+        xd.append(path_2[i])
+    x = len(path_2) - 1
+    while x >= 0:
+        xd.append(path_2[x])
+        x -= 1
+    print(xd)
 
 
 if __name__ == "__main__":
@@ -185,6 +205,6 @@ if __name__ == "__main__":
     dfs(1)
     dfs2(1)
     for i in range(q):
-        print(calc(_u[i], _v[i]))
+        calc(_u[i], _v[i])
     print(cycle[1].members)
     print(cycle[2].members)
