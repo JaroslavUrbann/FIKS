@@ -53,6 +53,7 @@ def get_cycle_order(u):
 
 
 def distance_same_cycle(u, v):
+    print(node_to_cycle_index[u] == node_to_cycle_index[v])
     index = node_to_cycle_index[u]
     distance = abs(distance_to_top[u] - distance_to_top[v])
     return min(distance, cycle[index].length - distance)
@@ -110,10 +111,7 @@ def distance_top_down(ancestor, u):
     b = u
     i = 17
     while i >= 0:
-        print("y")
         if max_order[b][i] < cycle[index].order:
-            print(b)
-            print(max_order[b])
             b = f[b][i]
         i -= 1
     b = parent[b]
@@ -126,20 +124,17 @@ def calc(u, v):
 
 
 if __name__ == "__main__":
-    # n = 9
-    # k = 12
-    # q = 3
-    # u = [1, 1, 1, 8, 8, 8, 2, 2, 3, 4, 4, 5]
-    # v = [8, 2, 3, 6, 7, 2, 4, 3, 4, 7, 5, 6]
-    # c = [2, 4, 7, 3, 14, 1, 9, 5, 1, 8, 6, 2]
-    # _u = [1, 3, 1]
-    # _v = [7, 5, 3]
+    u = [1, 1, 1, 8, 8, 8, 2, 2, 3, 4, 4, 5]
+    v = [8, 2, 3, 6, 7, 2, 4, 3, 4, 7, 5, 6]
+    c = [2, 4, 7, 3, 14, 1, 9, 5, 1, 8, 6, 2]
+    _u = [3]
+    _v = [5]
 
-    u = [1,1,2,3,4,4,5,6]
-    v = [2,3,3,4,5,7,6,7]
-    c = [2,4,1,1,1,1,2,1]
-    _u = [1]
-    _v = [6]
+    # u = [1,1,2,3,4,4,5,6]
+    # v = [2,3,3,4,5,7,6,7]
+    # c = [2,4,1,1,1,1,2,1]
+    # _u = [3]
+    # _v = [6]
     n = max(max(u), max(v))
     k = len(u)
     q = len(_u)
